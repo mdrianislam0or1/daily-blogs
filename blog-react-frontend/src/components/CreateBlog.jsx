@@ -1,7 +1,4 @@
-/* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
-import Editor from 'react-simple-wysiwyg';
-import { useForm } from 'react-hook-form';
+import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
@@ -14,47 +11,47 @@ const CreateBlog = () => {
         setHtml(value);
     };
 
-    // const handleFileChange = async (e) => {
-    //     const file = e.target.files[0];
-    //     const formData = new FormData();
-    //     formData.append('image', file);
+    const handleFileChange = async (e) => {
+        const file = e.target.files[0];
+        const formData = new FormData();
+        formData.append('image', file);
 
-    //     const res = await fetch('http://localhost:8000/api/save-temp-image/', {
-    //         method: 'POST',
-    //         body: formData,
-    //     });
+        const res = await fetch('http://localhost:8000/api/save-temp-image/', {
+            method: 'POST',
+            body: formData,
+        });
 
-    //     const result = await res.json();
+        const result = await res.json();
 
-    //     if (!result.status) {
-    //         alert(result.errors.image);
-    //         e.target.value = null;
-    //     }
+        if (!result.status) {
+            alert(result.errors.image);
+            e.target.value = null;
+        }
 
-    //     setImageId(result.image.id);
-    // };
+        setImageId(result.image.id);
+    };
 
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm();
 
-    const formSubmit = async (data) => {
-        const newData = { ...data, description: html, image_id: imageId };
+    const formSubmit = async (e) => {
+        e.preventDefault();
+
+        const formData = new FormData(e.target);
+        formData.append('description', html);
+        formData.append('image_id', imageId);
 
         const res = await fetch('http://localhost:8000/api/blogs', {
             method: 'POST',
-            headers: {
-                'Content-type': 'application/json',
-            },
-            body: JSON.stringify(newData),
+            body: formData,
         });
 
-        toast('Blog added successfully.');
-
-        navigate('/');
+        if (res.ok) {
+            toast('Blog added successfully.');
+            navigate('/');
+        } else {
+            toast.error('Failed to add blog.');
+        }
     };
+
 
     return (
         <div className="container mx-auto px-4 mb-5">
@@ -63,48 +60,56 @@ const CreateBlog = () => {
                 <a href="/" className="bg-black px-2 py-2 text-white">Back</a>
             </div>
             <div className="card border-0 shadow-lg">
-                <form onSubmit={handleSubmit(formSubmit)}>
+                <form onSubmit={formSubmit} >
                     <div className="card-body">
                         <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700">Title</label>
+                            <label htmlFor="title" className="block text-sm font-medium text-gray-700">Title</label>
                             <input
-                                {...register('title', { required: true })}
+                                id="title"
+                                name="title"
                                 type="text"
-                                className={`form-input mt-1 block w-full rounded-md border-gray-300 focus:border-indigo-500 ${errors.title && 'border-red-500'}`}
+                                className="form-input mt-1 block w-full rounded-md border-gray-300 focus:border-indigo-500"
                                 placeholder="Title"
                             />
-                            {errors.title && <p className="text-red-500 text-sm mt-1">Title field is required</p>}
                         </div>
                         <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700">Short Description</label>
+                            <label htmlFor="shortDesc" className="block text-sm font-medium text-gray-700">Short Description</label>
                             <textarea
-                                {...register('shortDesc')}
+                                id="shortDesc"
+                                name="shortDesc"
                                 rows="5"
                                 className="form-textarea mt-1 block w-full rounded-md border-gray-300 focus:border-indigo-500"
                             ></textarea>
                         </div>
                         <div className="mb-4">
                             <label className="block text-sm font-medium text-gray-700">Description</label>
-                            <Editor
+                            <textarea
                                 value={html}
-                                onChange={onChange}
-                                containerProps={{ style: { height: '400px' } }}
-                                className="mt-1 block w-full rounded-md border-gray-300 focus:border-indigo-500"
+                                onChange={(e) => onChange(e.target.value)}
+                                style={{ height: '400px' }}
+                                className="form-textarea mt-1 block w-full rounded-md border-gray-300 focus:border-indigo-500"
+                            />
+
+                        </div>
+                        <div className="mb-4">
+                            <label htmlFor="image" className="block text-sm font-medium text-gray-700">Image</label>
+                            <input
+                                id="image"
+                                name="image"
+                                onChange={handleFileChange}
+                                type="file"
+                                className="form-input mt-1 block w-full rounded-md border-gray-300 focus:border-indigo-500"
                             />
                         </div>
-                        {/* <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700">Image</label>
-                            <input onChange={handleFileChange} type="file" className="form-input mt-1 block w-full rounded-md border-gray-300 focus:border-indigo-500" />
-                        </div> */}
                         <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700">Author</label>
+                            <label htmlFor="author" className="block text-sm font-medium text-gray-700">Author</label>
                             <input
-                                {...register('author', { required: true })}
+                                id="author"
+                                name="author"
                                 type="text"
-                                className={`form-input mt-1 block w-full rounded-md border-gray-300 focus:border-indigo-500 ${errors.author && 'border-red-500'}`}
+                                className="form-input mt-1 block w-full rounded-md border-gray-300 focus:border-indigo-500"
                                 placeholder="Author"
                             />
-                            {errors.author && <p className="text-red-500 text-sm mt-1">Author field is required</p>}
                         </div>
                         <button type="submit" className="bg-black px-2 py-2 text-white">Create</button>
                     </div>

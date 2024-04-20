@@ -100,11 +100,13 @@ const EditBlog = () => {
                         </div>
                         <div className="mb-4">
                             <label className="block text-sm font-medium text-gray-700">Description</label>
-                            <Editor
+
+
+                            <textarea
                                 value={html}
-                                onChange={onChange}
-                                containerProps={{ style: { height: '400px' } }}
-                                className="mt-1 block w-full rounded-md border-gray-300 focus:border-indigo-500"
+                                onChange={(e) => onChange(e.target.value)}
+                                style={{ height: '400px' }}
+                                className="form-textarea mt-1 block w-full rounded-md border-gray-300 focus:border-indigo-500"
                             />
                         </div>
                         <div className="mb-4">

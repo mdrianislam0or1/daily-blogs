@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Validator;
 
 class BlogController extends Controller
 {
-    // This method will return all blogs
     public function index(Request $request) {        
 
         $blogs = Blog::orderBy('created_at','DESC');
@@ -27,7 +26,6 @@ class BlogController extends Controller
         ]);
     }
 
-    // This method will return a single blog
     public function show($id) {
         $blog = Blog::find($id);
 
@@ -47,78 +45,9 @@ class BlogController extends Controller
 
     }
 
-    // This method will store a blog
-    // public function store(Request $request) {
-    //     $validator = Validator::make($request->all(), [
-    //         'title' => 'required|min:10',
-    //         'author' => 'required|min:3'
-    //     ]);
-
-    //     if ($validator->fails()) {
-    //         return response()->json([
-    //             'status' => false,
-    //             'message' => 'Please fix the errors',
-    //             'errors' => $validator->errors()
-    //         ]);
-    //     }
-
-    //     $blog = new Blog();
-    //     $blog->title = $request->title;
-    //     $blog->author = $request->author;
-    //     $blog->description = $request->description;
-    //     $blog->shortDesc = $request->shortDesc;
-    //     $blog->save();
-
-    //             // Save Image Here
-    //             $tempImage = TempImage::find($request->image_id);
-
-    //             if ($tempImage != null) {
-        
-    //                 // Delete old image here
-    //                 // File::delete(public_path('uploads/blogs/'.$blog->image));
-        
-    //                 $imageExtArray = explode('.',$tempImage->name);
-    //                 $ext = last($imageExtArray);
-    //                 $imageName = time().'-'.$blog->id.'.'.$ext;
-        
-    //                 $blog->image = $imageName;
-    //                 $blog->save();
-        
-    //                 $sourcePath = public_path('uploads/temp/'.$tempImage->name);
-    //                 $destPath = public_path('uploads/blogs/'.$imageName);
-        
-    //                 File::copy($sourcePath,$destPath);
-    //             }
 
 
-    //     // Save Image Here
-    //     // $tempImage = TempImage::find($request->image_id);
 
-    //     // if ($tempImage != null) {
-
-    //     //     $imageExtArray = explode('.',$tempImage->name);
-    //     //     $ext = last($imageExtArray);
-    //     //     $imageName = time().'-'.$blog->id.'.'.$ext;
-
-    //     //     $blog->image = $imageName;
-    //     //     $blog->save();
-
-    //     //     $sourcePath = public_path('uploads/temp/'.$tempImage->name);
-    //     //     $destPath = public_path('uploads/blogs/'.$imageName);
-
-    //     //     File::copy($sourcePath,$destPath);
-    //     // }
-
-    //     return response()->json([
-    //         'status' => true,
-    //         'message' => 'Blog added successfully.',
-    //         'data' => $blog
-    //     ]);
-    // }
-    
-
-
-    // This method will store a blog
 
     public function store(Request $request)
     {
@@ -142,13 +71,12 @@ class BlogController extends Controller
         $blog->shortDesc = $request->shortDesc;
         $blog->save();
     
-        // Save Image Here
         if ($request->has('image_id')) {
             $tempImage = TempImage::find($request->image_id);
     
             if ($tempImage != null) {
                 $imageExtArray = explode('.', $tempImage->name);
-                $ext = end($imageExtArray); // Use end() to get the last element of the array
+                $ext = end($imageExtArray);
                 $imageName = time() . '-' . $blog->id . '.' . $ext;
     
                 $blog->image = $imageName;
@@ -158,7 +86,7 @@ class BlogController extends Controller
                 $destPath = public_path('uploads/blogs/' . $imageName);
     
                 if (File::exists($sourcePath)) {
-                    File::move($sourcePath, $destPath); // Use File::move() to move the file
+                    File::move($sourcePath, $destPath); 
                 } else {
                     return response()->json([
                         'status' => false,
@@ -176,7 +104,6 @@ class BlogController extends Controller
     }
 
 
-    // This method will update a blog
     public function update($id, Request $request) {
 
         $blog = Blog::find($id);
@@ -207,12 +134,10 @@ class BlogController extends Controller
         $blog->shortDesc = $request->shortDesc;
         $blog->save();
 
-        // Save Image Here
         $tempImage = TempImage::find($request->image_id);
 
         if ($tempImage != null) {
 
-            // Delete old image here
             File::delete(public_path('uploads/blogs/'.$blog->image));
 
             $imageExtArray = explode('.',$tempImage->name);
@@ -235,7 +160,6 @@ class BlogController extends Controller
         ]);
     }
 
-     // This method will delete a blog
      public function destroy($id) {
 
         $blog = Blog::find($id);
@@ -247,10 +171,8 @@ class BlogController extends Controller
             ]);
         }
 
-        // Delete blog image first
         File::delete(public_path('uploads/blogs/'.$blog->image));
 
-        // Delete blog from DB
         $blog->delete();
 
         return response()->json([

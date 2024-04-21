@@ -7,7 +7,7 @@ const Register = () => {
   const [error, setError] = useState(null);
 
   const handleRegister = async () => {
-    setError(null); // Clear previous errors
+    setError(null); 
     try {
       const response = await axios.post('http://localhost:8000/api/register', {
         email,
@@ -16,7 +16,7 @@ const Register = () => {
       console.log('Registration successful:', response.data);
     } catch (error) {
       console.error('Registration failed:', error);
-      setError('Registration failed. Please try again.'); // Set error message
+      setError('Registration failed. Please try again.'); 
     }
   };
 

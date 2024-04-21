@@ -17,10 +17,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Registration
 Route::post('register', [LoginController::class, 'register']);
 
-// Login
 Route::post('login', [LoginController::class, 'login']);
 
 

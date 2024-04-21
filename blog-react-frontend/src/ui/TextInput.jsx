@@ -1,4 +1,3 @@
-// TextInput.jsx
 export default function TextInput({ title, value, onChange,type }) {
     return (
         <>

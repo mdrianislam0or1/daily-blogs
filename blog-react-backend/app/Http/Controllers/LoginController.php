@@ -44,7 +44,6 @@ class LoginController extends Controller
             ]);
         }
 
-        // Generate a token for the user
         $token = $login->createToken('authToken')->plainTextToken;
 
         return response()->json([

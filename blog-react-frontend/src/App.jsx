@@ -16,7 +16,7 @@ function App() {
     if (token && email) {
       setIsLoggedIn(true);
     } else {
-      setIsLoggedIn(false); // Make sure to set isLoggedIn to false if either token or email is missing
+      setIsLoggedIn(false); 
     }
   }, []);
   

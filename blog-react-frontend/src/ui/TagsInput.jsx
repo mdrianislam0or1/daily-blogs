@@ -1,4 +1,3 @@
-// TagsInput.jsx
 import { useState } from 'react';
 
 const TagsInput = ({ title, tags, onChange }) => {

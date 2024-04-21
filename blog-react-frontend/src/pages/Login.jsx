@@ -9,21 +9,19 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleLogin = async () => {
-    setError(null); // Clear previous errors
+    setError(null); 
     try {
       const response = await axios.post('http://localhost:8000/api/login', {
         email,
         password,
       });
       console.log('Login successful:', response.data);
-      // Store email and token in localStorage
       localStorage.setItem('email', email);
       localStorage.setItem('token', response.data.token);
-      // Redirect to create blog page
       navigate('/create');
     } catch (error) {
       console.error('Login failed:', error);
-      setError('Login failed. Please check your credentials.'); // Set error message
+      setError('Login failed. Please check your credentials.'); 
     }
   };
 

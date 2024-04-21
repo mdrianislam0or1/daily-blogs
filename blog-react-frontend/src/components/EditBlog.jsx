@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import Editor from 'react-simple-wysiwyg';
 import { useForm } from 'react-hook-form';
-import { toast } from 'react-toastify';
+import { toast } from 'sonner';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
 const EditBlog = () => {

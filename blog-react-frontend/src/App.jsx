@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { Routes, Route, Link, Navigate } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
 import Blogs from "./components/Blogs";
 import CreateBlog from "./components/CreateBlog";
 import BlogDetail from "./components/BlogDetail";
@@ -113,8 +112,7 @@ function App() {
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
 
-      {/* Toast Container */}
-      <ToastContainer />
+      
     </>
   );
 }

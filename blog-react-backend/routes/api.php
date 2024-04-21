@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\TempImageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -15,6 +16,16 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
+// Registration
+Route::post('register', [LoginController::class, 'register']);
+
+// Login
+Route::post('login', [LoginController::class, 'login']);
+
+
+
+
 Route::get('blogs',[BlogController::class,'index']);
 Route::post('blogs',[BlogController::class,'store']);
 Route::post('save-temp-image',[TempImageController::class,'store']);

@@ -51,11 +51,9 @@ class BlogController extends Controller
     public function store(Request $request) {
         $validator = Validator::make($request->all(), [
             'title' => 'required|min:10',
-            'author' => 'required|min:3',
-            'description' => 'required',
-            'image_id' => 'required',
+            'author' => 'required|min:3'
         ]);
-    
+
         if ($validator->fails()) {
             return response()->json([
                 'status' => false,
@@ -63,16 +61,54 @@ class BlogController extends Controller
                 'errors' => $validator->errors()
             ]);
         }
-    
-        // Create a new Blog instance and save it
+
         $blog = new Blog();
         $blog->title = $request->title;
         $blog->author = $request->author;
         $blog->description = $request->description;
-        $blog->shortDesc = $request->shortDesc; // Adjust if necessary
-        $blog->image_id = $request->image_id; // Adjust if necessary
+        $blog->shortDesc = $request->shortDesc;
         $blog->save();
-    
+
+                // Save Image Here
+                $tempImage = TempImage::find($request->image_id);
+
+                if ($tempImage != null) {
+        
+                    // Delete old image here
+                    // File::delete(public_path('uploads/blogs/'.$blog->image));
+        
+                    $imageExtArray = explode('.',$tempImage->name);
+                    $ext = last($imageExtArray);
+                    $imageName = time().'-'.$blog->id.'.'.$ext;
+        
+                    $blog->image = $imageName;
+                    $blog->save();
+        
+                    $sourcePath = public_path('uploads/temp/'.$tempImage->name);
+                    $destPath = public_path('uploads/blogs/'.$imageName);
+        
+                    File::copy($sourcePath,$destPath);
+                }
+
+
+        // Save Image Here
+        // $tempImage = TempImage::find($request->image_id);
+
+        // if ($tempImage != null) {
+
+        //     $imageExtArray = explode('.',$tempImage->name);
+        //     $ext = last($imageExtArray);
+        //     $imageName = time().'-'.$blog->id.'.'.$ext;
+
+        //     $blog->image = $imageName;
+        //     $blog->save();
+
+        //     $sourcePath = public_path('uploads/temp/'.$tempImage->name);
+        //     $destPath = public_path('uploads/blogs/'.$imageName);
+
+        //     File::copy($sourcePath,$destPath);
+        // }
+
         return response()->json([
             'status' => true,
             'message' => 'Blog added successfully.',

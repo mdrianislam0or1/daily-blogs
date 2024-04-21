@@ -4,6 +4,8 @@ import Blogs from "./components/Blogs";
 import CreateBlog from "./components/CreateBlog";
 import BlogDetail from "./components/BlogDetail";
 import EditBlog from "./components/EditBlog";
+import Register from "./pages/Register";
+import Login from "./pages/Login";
 
 function App() {
   return (
@@ -33,6 +35,8 @@ function App() {
         <Route path="/create" element={<CreateBlog />} />
         <Route path="/blog/:id" element={<BlogDetail />} />
         <Route path="/blog/edit/:id" element={<EditBlog />} />
+        <Route path="/register" component={Register} />
+        <Route path="/login" component={Login} />
       </Routes>
 
       {/* Toast Container */}

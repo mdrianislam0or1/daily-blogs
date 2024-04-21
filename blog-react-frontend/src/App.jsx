@@ -31,12 +31,12 @@ function App() {
   return (
     <>
       {/* Navbar */}
-      <nav className="bg-gray-800 shadow-lg">
+      <nav className="bg-indigo-400 shadow-lg">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between py-4">
             {/* Logo */}
             <Link to="/" className="text-white text-2xl font-bold">
-              React & Laravel Blog App
+            (  React & Laravel) Blog App
             </Link>
             {/* Navigation Links */}
             <ul className="flex space-x-4">

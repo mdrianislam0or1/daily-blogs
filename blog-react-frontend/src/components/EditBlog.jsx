@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import Editor from 'react-simple-wysiwyg';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 const EditBlog = () => {
     const [blog, setBlog] = useState({});
@@ -74,11 +74,11 @@ const EditBlog = () => {
     return (
         <div className="container mx-auto px-4 mb-5">
             <div className="flex justify-between items-center pt-5 mb-4">
-                <h4 className="text-xl font-semibold">Edit Blog</h4>
-                <a href="/" className="bg-black px-2 py-2 text-white">Back</a>
+                <h4 className="text-3xl font-semibold text-gray-800">Edit Blog</h4>
+                <Link to="/" className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition duration-300">Back</Link>
             </div>
             <div className="card border-0 shadow-lg">
-                <form onSubmit={handleSubmit(formSubmit)}>
+                <form onSubmit={handleSubmit(formSubmit)} className='p-5'>
                     <div className="card-body">
                         <div className="mb-4">
                             <label className="block text-sm font-medium text-gray-700">Title</label>
@@ -100,12 +100,9 @@ const EditBlog = () => {
                         </div>
                         <div className="mb-4">
                             <label className="block text-sm font-medium text-gray-700">Description</label>
-
-
-                            <textarea
+                            <Editor
                                 value={html}
-                                onChange={(e) => onChange(e.target.value)}
-                                style={{ height: '400px' }}
+                                onChange={setHtml}
                                 className="form-textarea mt-1 block w-full rounded-md border-gray-300 focus:border-indigo-500"
                             />
                         </div>
@@ -124,7 +121,7 @@ const EditBlog = () => {
                             />
                             {errors.author && <p className="text-red-500 text-sm mt-1">Author field is required</p>}
                         </div>
-                        <button type="submit" className="bg-black px-2 py-2 text-white">Update</button>
+                        <button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition duration-300">Update</button>
                     </div>
                 </form>
             </div>

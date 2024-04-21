@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import BlogCard from './BlogCard';
+import { Link } from 'react-router-dom';
 
 const Blogs = () => {
     const [blogs, setBlogs] = useState([]);
@@ -35,18 +36,18 @@ const Blogs = () => {
                         type="text"
                         value={keyword}
                         onChange={(e) => setKeyword(e.target.value)}
-                        className="form-control mr-2"
+                        className="border border-gray-300 rounded-md p-2 mr-2 focus:outline-none"
                         placeholder="Search Blogs"
                     />
-                    <button type="submit" className="bg-black px-2 py-2 text-white">Search</button>
-                    <button type="button" onClick={() => resetSearch()} className="btn btn-success ml-2">Reset</button>
+                    <button type="submit" className="bg-gray-900 text-white px-4 py-2 rounded-md">Search</button>
+                    <button type="button" onClick={() => resetSearch()} className="bg-green-500 text-white px-4 py-2 rounded-md ml-2">Reset</button>
                 </form>
             </div>
             <div className="flex justify-between items-center pt-5 mb-4">
                 <h4 className="text-xl font-semibold">Blogs</h4>
-                <a href="/create" className="bg-black px-2 py-2 text-white">Create</a>
+                <Link to="/create" className="bg-gray-900 text-white px-4 py-2 rounded-md">Create</Link>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
                 {blogs.map((blog) => (
                     <BlogCard key={blog.id} blogs={blogs} setBlogs={setBlogs} blog={blog} />
                 ))}

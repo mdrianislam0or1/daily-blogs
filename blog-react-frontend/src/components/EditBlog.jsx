@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
+import { useForm, Controller } from 'react-hook-form';
 import Editor from 'react-simple-wysiwyg';
-import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
@@ -13,11 +13,11 @@ const EditBlog = () => {
     const {
         register,
         handleSubmit,
+        control,
         reset,
         formState: { errors },
     } = useForm();
 
-    const [html, setHtml] = useState('');
     const [imageId, setImageId] = useState('');
 
     useEffect(() => {
@@ -25,15 +25,10 @@ const EditBlog = () => {
             const res = await fetch(`http://localhost:8000/api/blogs/${params.id}`);
             const result = await res.json();
             setBlog(result.data);
-            setHtml(result.data.description);
             reset(result.data);
         };
         fetchBlog();
     }, [params.id, reset]);
-
-    const onChange = (value) => {
-        setHtml(value);
-    };
 
     const handleFileChange = async (e) => {
         const file = e.target.files[0];
@@ -56,7 +51,7 @@ const EditBlog = () => {
     };
 
     const formSubmit = async (data) => {
-        const newData = { ...data, description: html, image_id: imageId };
+        const newData = { ...data, image_id: imageId };
 
         const res = await fetch(`http://localhost:8000/api/blogs/${params.id}`, {
             method: 'PUT',
@@ -66,9 +61,12 @@ const EditBlog = () => {
             body: JSON.stringify(newData),
         });
 
-        toast('Blog updated successfully.');
-
-        navigate('/');
+        if (res.ok) {
+            toast('Blog updated successfully.');
+            navigate('/');
+        } else {
+            toast('Failed to update blog.');
+        }
     };
 
     return (
@@ -100,10 +98,16 @@ const EditBlog = () => {
                         </div>
                         <div className="mb-4">
                             <label className="block text-sm font-medium text-gray-700">Description</label>
-                            <Editor
-                                value={html}
-                                onChange={setHtml}
-                                className="form-textarea mt-1 block w-full rounded-md border-gray-300 focus:border-indigo-500"
+                            <Controller
+                                name="description"
+                                control={control}
+                                render={({ field }) => (
+                                    <Editor
+                                        value={field.value}
+                                        onChange={field.onChange}
+                                        className="form-textarea mt-1 block w-full rounded-md border-gray-300 focus:border-indigo-500"
+                                    />
+                                )}
                             />
                         </div>
                         <div className="mb-4">
